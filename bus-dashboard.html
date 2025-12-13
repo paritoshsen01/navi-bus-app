@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bus Driver Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">Navi Bus</a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="admin.html" class="nav-link">Admin</a></li>
+        <li class="nav-item"><a href="bus-login.html" class="nav-link">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="moving-overlay"></div>
+  <div class="content dashboard-content" style="background-image: url('Customerbg.png'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh; background-attachment: fixed; background-color: transparent; height: 100vh; overflow: auto;">
+    <h1>Bus Driver Dashboard</h1>
+    <div id="dashboard-content">
+      <p>Loading your dashboard...</p>
+    </div>
+  </div>
+
+
+  <script>
+    async function checkApproval() {
+      // For demo, get driver ID from query param
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (!id) {
+        document.getElementById('dashboard-content').textContent = 'Invalid access. No driver ID provided.';
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:3001/bus-driver-status?id=' + encodeURIComponent(id));
+        if (!res.ok) {
+          document.getElementById('dashboard-content').textContent = 'Failed to load dashboard.';
+          return;
+        }
+        const data = await res.json();
+        if (data.status === 'approved') {
+          document.getElementById('dashboard-content').innerHTML = `
+            <p>Welcome, ${data.name}!</p>
+            <p>Your verification is approved.</p>
+            <div id="bus-management">
+              <h2>Add a Bus</h2>
+              <form id="add-bus-form" enctype="multipart/form-data">
+                <input type="hidden" id="driverId" name="driverId" value="${data.id}" />
+                <label for="busNumber">Bus Name:</label><br/>
+                <input type="text" id="busNumber" name="busNumber" required /><br/>
+                <label for="phone">Phone Number:</label><br/>
+                <input type="tel" id="phone" name="phone" required /><br/>
+                <label for="startPoint">From:</label><br/>
+                <select id="startPoint" name="startPoint" required>
+                  <option value="">Select From</option>
+                  <option value="Amity University">Amity University</option>
+                  <option value="Raipur">Raipur</option>
+                  <option value="Kharoa">Kharoa</option>
+                </select><br/>
+                <label for="endPoint">To:</label><br/>
+                <select id="endPoint" name="endPoint" required>
+                  <option value="">Select To</option>
+                  <option value="Amity University">Amity University</option>
+                  <option value="Raipur">Raipur</option>
+                  <option value="Kharoa">Kharoa</option>
+                </select><br/>
+                <label for="photo">Bus Photo:</label><br/>
+                <input type="file" id="photo" name="photo" accept="image/*" required /><br/><br/>
+                <button type="submit">Next</button>
+              </form>
+              <h2>Your Buses</h2>
+              <div id="bus-list"></div>
+            </div>
+          `;
+          setupBusManagement(data.id);
+        } else if (data.status === 'pending') {
+          document.getElementById('dashboard-content').textContent = 'Your verification is still pending. Please wait for admin approval.';
+        } else if (data.status === 'rejected') {
+          document.getElementById('dashboard-content').textContent = 'Your verification was rejected. Please contact support.';
+        } else {
+          document.getElementById('dashboard-content').textContent = 'Unknown status.';
+        }
+      } catch (error) {
+        document.getElementById('dashboard-content').textContent = 'Error loading dashboard.';
+      }
+    }
+
+    checkApproval();
+
+    function setupBusManagement(driverId) {
+      const form = document.getElementById('add-bus-form');
+      const busListDiv = document.getElementById('bus-list');
+      const startPointSelect = document.getElementById('startPoint');
+      const endPointSelect = document.getElementById('endPoint');
+
+      function updateSelectOptions() {
+        const startValue = startPointSelect.value;
+        const endValue = endPointSelect.value;
+        const options = ['Amity University', 'Raipur', 'Kharoa'];
+
+        // Enable all options first
+        Array.from(startPointSelect.options).forEach(option => option.disabled = false);
+        Array.from(endPointSelect.options).forEach(option => option.disabled = false);
+
+        // Disable selected option in the other select
+        if (startValue) {
+          const endOption = Array.from(endPointSelect.options).find(option => option.value === startValue);
+          if (endOption) endOption.disabled = true;
+        }
+        if (endValue) {
+          const startOption = Array.from(startPointSelect.options).find(option => option.value === endValue);
+          if (startOption) startOption.disabled = true;
+        }
+      }
+
+      startPointSelect.addEventListener('change', updateSelectOptions);
+      endPointSelect.addEventListener('change', updateSelectOptions);
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const busNumber = formData.get('busNumber');
+        const phone = formData.get('phone');
+        const startPoint = formData.get('startPoint');
+        const endPoint = formData.get('endPoint');
+        const stops = [];
+        const times = [];
+        const photo = formData.get('photo');
+        showSummary(driverId, busNumber, phone, startPoint, endPoint, stops, times, photo);
+      });
+
+      function showSummary(driverId, busNumber, phone, startPoint, endPoint, stops, times, photo) {
+        const dashboardContent = document.getElementById('dashboard-content');
+        dashboardContent.innerHTML = `
+          <h2>Summary</h2>
+          <p><strong>Bus Name:</strong> ${busNumber}</p>
+          <p><strong>Phone Number:</strong> ${phone}</p>
+          <p><strong>Route:</strong> ${startPoint} to ${endPoint}</p>
+          <button id="edit-btn">Edit</button>
+          <button id="confirm-btn">Confirm and Add Bus</button>
+        `;
+        document.getElementById('edit-btn').addEventListener('click', () => {
+          setupForm(driverId);
+        });
+        document.getElementById('confirm-btn').addEventListener('click', async () => {
+          const formData = new FormData();
+          formData.set('driverId', driverId);
+          formData.set('busNumber', busNumber);
+          formData.set('phone', phone);
+          formData.set('startPoint', startPoint);
+          formData.set('endPoint', endPoint);
+          formData.set('stops', JSON.stringify(stops));
+          formData.set('times', JSON.stringify(times));
+          formData.set('photo', photo);
+          try {
+            const res = await fetch('http://localhost:3001/bus/add', {
+              method: 'POST',
+              body: formData
+            });
+            const data = await res.json();
+            if (res.ok) {
+              alert('Bus added successfully');
+              setupForm(driverId);
+              loadBuses(driverId);
+            } else {
+              alert(data.error || 'Failed to add bus');
+            }
+          } catch (error) {
+            alert('Error adding bus');
+          }
+        });
+      }
+
+      function setupForm(driverId) {
+        document.getElementById('dashboard-content').innerHTML = `
+          <p>Welcome!</p>
+          <p>Your verification is approved.</p>
+          <div id="bus-management">
+            <h2>Add a Bus</h2>
+            <form id="add-bus-form" enctype="multipart/form-data">
+              <input type="hidden" id="driverId" name="driverId" value="${driverId}" />
+              <label for="busNumber">Bus Name:</label><br/>
+              <input type="text" id="busNumber" name="busNumber" required /><br/>
+              <label for="phone">Phone Number:</label><br/>
+              <input type="tel" id="phone" name="phone" required /><br/>
+              <label for="startPoint">From:</label><br/>
+              <select id="startPoint" name="startPoint" required>
+                <option value="">Select From</option>
+                <option value="Amity University">Amity University</option>
+                <option value="Raipur">Raipur</option>
+                <option value="Kharoa">Kharoa</option>
+              </select><br/>
+              <label for="endPoint">To:</label><br/>
+              <select id="endPoint" name="endPoint" required>
+                <option value="">Select To</option>
+                <option value="Amity University">Amity University</option>
+                <option value="Raipur">Raipur</option>
+                <option value="Kharoa">Kharoa</option>
+              </select><br/>
+              <label for="photo">Bus Photo:</label><br/>
+              <input type="file" id="photo" name="photo" accept="image/*" required /><br/><br/>
+              <button type="submit">Next</button>
+            </form>
+            <h2>Your Buses</h2>
+            <div id="bus-list"></div>
+          </div>
+        `;
+        setupBusManagement(driverId);
+      }
+
+      async function loadBuses(driverId) {
+        try {
+          const res = await fetch(`http://localhost:3001/bus/list?driverId=${encodeURIComponent(driverId)}`);
+          if (!res.ok) {
+            busListDiv.textContent = 'Failed to load buses.';
+            return;
+          }
+          const buses = await res.json();
+          if (buses.length === 0) {
+            busListDiv.textContent = 'No buses added yet.';
+            return;
+          }
+          busListDiv.innerHTML = '';
+          buses.forEach(bus => {
+            const div = document.createElement('div');
+            div.style.border = '1px solid #ccc';
+            div.style.margin = '10px';
+            div.style.padding = '10px';
+            div.innerHTML = `
+              <p><strong>Bus Name:</strong> ${bus.busNumber}</p>
+              <p><strong>Phone:</strong> ${bus.phone}</p>
+              <p><strong>Route:</strong> ${bus.startPoint} to ${bus.endPoint}</p>
+              <p><strong>Photo:</strong> <a href="http://localhost:3001/${bus.photo}" target="_blank">View</a></p>
+              <button onclick="deleteBus('${bus.id}')">Delete Bus</button>
+            `;
+            busListDiv.appendChild(div);
+          });
+        } catch (error) {
+          busListDiv.textContent = 'Error loading buses.';
+        }
+      }
+
+      window.deleteBus = async function(busId) {
+        if (!confirm('Are you sure you want to delete this bus?')) return;
+        try {
+          const res = await fetch('http://localhost:3001/bus/delete', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ busId })
+          });
+          const data = await res.json();
+          if (res.ok) {
+            alert('Bus deleted successfully');
+            loadBuses(driverId);
+          } else {
+            alert(data.error || 'Failed to delete bus');
+          }
+        } catch (error) {
+          alert('Error deleting bus');
+        }
+      };
+
+      loadBuses(driverId);
+    }
+  </script>
+</body>
+</html>

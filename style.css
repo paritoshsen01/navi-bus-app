@@ -1,0 +1,554 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body, html {
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: auto;
+  position: relative;
+  color: #f5f1ea;
+}
+/* Background container removed as per user request */
+.background {
+  display: none;
+}
+/* Moving overlay effect - subtle animated gradient */
+.moving-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    url('Homepage.png') no-repeat center center / cover,
+    linear-gradient(to right, rgba(255, 69, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 10%, transparent 10%, transparent 90%, rgba(255, 140, 0, 0.1) 90%, rgba(255, 69, 0, 0.1) 100%),
+    linear-gradient(270deg, rgba(255,140,0,0.05), rgba(255,69,0,0.05), rgba(255,140,0,0.05));
+  background-size: cover, 600% 600%, 600% 600%;
+  animation: moveGradient 20s ease infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+@keyframes moveGradient {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+/* Centered content container */
+.content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding: 100px 20px 20px 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  color: #f5f1ea;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+}
+
+.dashboard-content {
+  padding-top: 120px;
+}
+h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
+  margin-bottom: 0.3em;
+  line-height: 1.1;
+}
+h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 2em;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.9);
+}
+/* Buttons container */
+.buttons {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+button {
+  background-color: #ff7f00;
+  border: none;
+  padding: 0.8em 2.5em;
+  border-radius: 30px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(255,127,0,0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+button:hover {
+  background-color: #ff9c33;
+  box-shadow: 0 6px 12px rgba(255,156,51,0.7);
+}
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+  button {
+    width: 100%;
+    max-width: 300px;
+  }
+  .buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+/* Navbar styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-logo {
+  color: #ff7f00;
+  font-weight: 900;
+  font-size: 1.5rem;
+  text-decoration: none;
+  user-select: none;
+}
+
+.nav-logo::after {
+  content: "Navi Bus";
+  color: #ff7f00;
+  font-weight: 900;
+  font-size: 1.5rem;
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  pointer-events: none;
+  user-select: none;
+  display: none;
+}
+
+body.customer-login .nav-logo {
+  color: transparent;
+  position: relative;
+}
+
+body.customer-login .nav-logo::after {
+  display: inline;
+}
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.nav-item {
+}
+.nav-link {
+  color: #f5f1ea;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+.nav-link:hover {
+  color: #ff9c33;
+  text-decoration: underline;
+}
+/* Footer styles */
+.footer {
+  background-color: rgba(0,0,0,0.7);
+  color: #f5f1ea;
+  text-align: center;
+  padding: 1rem 1rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  font-size: 0.9rem;
+  user-select: none;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.5);
+}
+
+/* Accordion styles */
+.accordion-content {
+  display: none;
+}
+.accordion-header {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  margin-bottom: 5px;
+  transition: background-color 0.3s ease;
+}
+.accordion-header:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.accordion-header.active {
+  background-color: rgba(255, 140, 0, 0.3);
+}
+.accordion-content {
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+}
+
+/* Bus Login Page */
+body {
+  background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+  color: #f5f1ea;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.bus-login-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+#bus-registration-form {
+  max-width: 500px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+#bus-registration-form h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ff8c00;
+  font-size: 2rem;
+}
+#bus-registration-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #f5f1ea;
+}
+#bus-registration-form input[type="text"],
+#bus-registration-form input[type="email"],
+#bus-registration-form input[type="tel"],
+#bus-registration-form input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f1ea;
+  font-size: 1rem;
+}
+#bus-registration-form input[type="file"] {
+  padding: 8px;
+}
+#bus-registration-form button {
+  width: 100%;
+  background: linear-gradient(135deg, #ff8c00, #ff4500);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#bus-registration-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+}
+#message {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Admin Page */
+#login-section, #admin-section {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f9f9f9;
+}
+#login-section input[type="password"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #333;
+  color: #f5f1ea;
+}
+#login-section button, #admin-section button {
+  background-color: #ff8c00;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+#login-section button:hover, #admin-section button:hover {
+  background-color: #e07b00;
+}
+#login-message {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Admin verification entries */
+#pending-list div, #rejected-list div {
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  padding: 10px;
+  background: white;
+}
+#pending-list button, #rejected-list button {
+  margin-top: 10px;
+}
+
+/* Admin Container */
+.admin-container {
+  max-width: 800px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+}
+.admin-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ff8c00;
+  font-size: 1.8rem;
+}
+.admin-container input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f1ea;
+  font-size: 1rem;
+}
+.admin-container button {
+  width: 100%;
+  background: linear-gradient(135deg, #ff8c00, #ff4500);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.admin-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+}
+#login-message {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Admin verification entries */
+#pending-list div, #rejected-list div {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin: 10px 0;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  color: #f5f1ea;
+}
+#pending-list button, #rejected-list button {
+  margin-top: 10px;
+  margin-right: 10px;
+  background: linear-gradient(135deg, #ff8c00, #ff4500);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+#pending-list button:hover, #rejected-list button:hover {
+  background: linear-gradient(135deg, #e07b00, #cc3300);
+}
+
+/* Bus Dashboard */
+#dashboard-content {
+  max-width: 600px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+  color: #f5f1ea;
+}
+#dashboard-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ff8c00;
+  font-size: 1.8rem;
+}
+#dashboard-content p {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+/* Add Bus Form Styles */
+#bus-management {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#bus-management h2 {
+  color: #ff8c00;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+#add-bus-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #f5f1ea;
+}
+
+#add-bus-form input[type="text"],
+#add-bus-form input[type="tel"],
+#add-bus-form input[type="number"],
+#add-bus-form input[type="file"],
+#add-bus-form input[type="time"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f1ea;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+#add-bus-form input[type="text"]:focus,
+#add-bus-form input[type="tel"]:focus,
+#add-bus-form input[type="number"]:focus,
+#add-bus-form input[type="file"]:focus,
+#add-bus-form input[type="time"]:focus {
+  border-color: #ff8c00;
+  outline: none;
+}
+
+#stops-container {
+  margin-bottom: 15px;
+}
+
+#stops-container div {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#stops-container input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f5f1ea;
+}
+
+#add-bus-form button {
+  width: 100%;
+  background: linear-gradient(135deg, #ff8c00, #ff4500);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#add-bus-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+}
+
+#bus-list {
+  margin-top: 20px;
+}
+
+#bus-list div {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  color: #f5f1ea;
+}
+
+#bus-list div p {
+  margin: 5px 0;
+}
+
+#bus-list div button {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+#bus-list div button:hover {
+  background: linear-gradient(135deg, #bd2130, #a02622);
+}

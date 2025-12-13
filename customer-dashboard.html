@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Details Website</title>
+  <link rel="stylesheet" href="customer-dashboard.css" />
+  <style>
+    /* Additional styles for single page */
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    .nav-links a {
+      cursor: pointer;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 5rem auto;
+      padding: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .login-container h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-container label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .login-container button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #007bff;
+      color: white;
+      font-weight: 700;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .login-container button:hover {
+      background-color: #0056b3;
+    }
+    .login-container #clearBtn {
+      background-color: #6c757d;
+      margin-top: 0.5rem;
+    }
+    .login-container #clearBtn:hover {
+      background-color: #5a6268;
+    }
+    .nav-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .nav-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .nav-link a:hover {
+      text-decoration: underline;
+    }
+    .dashboard-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    .dashboard-container h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      text-align: left;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    .no-data {
+      text-align: center;
+      font-style: italic;
+      color: #666;
+    }
+    .confirmation-message h2 {
+      color: #2e7d32;
+      text-align: center;
+    }
+    .confirmation-message p {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Navi Bus</div>
+    <ul class="nav-links">
+      <li><a onclick="showSection('home')">Home</a></li>
+      <li><a onclick="showSection('women-safety')">Women Safety</a></li>
+    </ul>
+  </nav>
+  <div id="botdetected" style="display:none;"></div>
+
+  <!-- Home Section -->
+  <div id="home" class="section active container">
+    <h1>Customer Login</h1>
+    <form class="contact-form" id="customerForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required />
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" required />
+
+      <label>Gender</label>
+      <div>
+        <input type="radio" id="male" name="gender" value="male" required />
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="female" required />
+        <label for="female">Female</label>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Route Selection Section -->
+  <div id="route" class="section container">
+    <h1>Route Selection</h1>
+    <form class="contact-form" id="routeForm">
+      <label for="from">From</label>
+      <select id="from" name="from" required class="input-select">
+        <option value="" disabled selected>Select</option>
+        <option value="Amity University">Amity University</option>
+        <option value="Raipur">Raipur</option>
+        <option value="Kharoa">Kharoa</option>
+      </select>
+
+      <label for="to">To</label>
+      <select id="to" name="to" required class="input-select">
+        <option value="" disabled selected>Select</option>
+        <option value="Amity University">Amity University</option>
+        <option value="Raipur">Raipur</option>
+        <option value="Kharoa">Kharoa</option>
+      </select>
+
+      <button type="submit" class="btn-submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Bus Selection Section -->
+  <div id="bus-selection" class="section container">
+    <h1>Available Buses</h1>
+    <div id="bus-list"></div>
+    <button id="proceedToPayment" class="btn-submit">Proceed to Payment</button>
+  </div>
+
+  <!-- Payment Section -->
+  <div id="payment" class="section container">
+    <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 2rem; text-align: center;">Payment Details</h1>
+    <div class="payment-info">
+      <p>From: <span id="from-route"></span></p>
+      <p>To: <span id="to-route"></span></p>
+      <p>Distance from your location: <span id="distance"></span></p>
+      <button id="calcDistanceBtn" class="btn-submit" style="font-size: 1.5rem; padding: 0.5rem 1rem;">Calculate Distance</button>
+      <p>Time: 13 min</p>
+      <p>Payment: 10 Rs</p>
+      <button id="paymentDoneBtn" class="btn-submit">Yes Payment Done</button>
+    </div>
+  </div>
+
+  <!-- Bill Section -->
+  <div id="bill" class="section container">
+    <h1>Bill</h1>
+    <div class="bill-details" id="billContent">
+      <p><strong>From:</strong> <span id="bill-from"></span></p>
+      <p><strong>To:</strong> <span id="bill-to"></span></p>
+      <p><strong>Distance from your location:</strong> <span id="bill-distance"></span></p>
+      <p><strong>Time:</strong> <span id="bill-time"></span></p>
+      <p><strong>Payment:</strong> <span id="bill-payment"></span></p>
+    </div>
+    <div class="confirmation-message">
+      <h2>🎉 Your Ticket is Confirmed! 🎉</h2>
+      <p>Thank you for your payment.</p>
+    </div>
+    <button id="downloadPdfBtn" class="btn-submit">Download as PDF</button>
+    <button onclick="showSection('home')" class="btn-submit">Back to Home</button>
+  </div>
+
+  <!-- Women Safety Panel Section -->
+  <div id="women-safety" class="section container">
+    <h1>Women Safety Panel</h1>
+    <p class="safety-description">In case of emergency, use the buttons below to immediately alert the bus staff and authorities. Your safety is our top priority.</p>
+
+    <div class="emergency-buttons">
+      <button class="btn-emergency btn-driver" onclick="alertDriver()">Alert Bus Driver</button>
+      <button class="btn-emergency btn-conductor" onclick="alertConductor()">Alert Conductor</button>
+      <button class="btn-emergency btn-police" onclick="callPolice()">Call Police</button>
+    </div>
+
+    <div class="status-message" id="statusMessage"></div>
+  </div>
+
+  <!-- Bus Login Section -->
+  <div id="bus-login" class="section login-container">
+    <h1>Bus Driver Login</h1>
+    <form id="loginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <button type="submit">Login</button>
+      <button type="button" id="clearBtn">Clear</button>
+    </form>
+    <div class="nav-link">
+      <a onclick="showSection('driver-dashboard')">Go to Driver Dashboard (Demo)</a>
+    </div>
+  </div>
+
+  <!-- Driver Dashboard Section -->
+  <div id="driver-dashboard" class="section dashboard-container">
+    <h1>Active Customers</h1>
+    <div class="nav-link">
+      <a onclick="showSection('bus-login')">Logout</a>
+    </div>
+    <table id="customersTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>DOB</th>
+          <th>Gender</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Distance</th>
+          <th>Time</th>
+          <th>Payment</th>
+          <th>Booking Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Active customers will be populated here -->
+      </tbody>
+    </table>
+    <p id="noDataMessage" class="no-data" style="display:none;">No active customers found.</p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Bot detection code
+      // Prevent right-click
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+      // Prevent keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J' || e.key === 'c' || e.key === 'C' || e.key === 'k' || e.key === 'K' || e.key === 'h' || e.key === 'H')) {
+          e.preventDefault();
+        }
+      });
+      // IP check
+      fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        const { ip, org, country } = data;
+        console.log(`IP: ${ip}, ISP: ${org}, Country: ${country}`);
+        if (country === 'IN') {
+          document.getElementById("botdetected").classList.add("red");
+        } else {
+          document.getElementById("botdetected").classList.add("green");
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching IP:', error);
+      });
+    });
+  </script>
+  <script>
+    // Global variables to store data
+    let customerData = {};
+    let routeData = {};
+    let paymentData = {};
+
+    // Function to show a section
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    // Home form submit
+    document.getElementById('customerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      customerData.name = document.getElementById('name').value;
+      customerData.phone = document.getElementById('phone').value;
+      customerData.dob = document.getElementById('dob').value;
+      customerData.gender = document.querySelector('input[name="gender"]:checked').value;
+      showSection('route');
+    });
+
+    // Route form submit
+    document.getElementById('routeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      routeData.from = document.getElementById('from').value;
+      routeData.to = document.getElementById('to').value;
+      // Show bus selection section
+      showSection('bus-selection');
+      fetchBuses(routeData.from, routeData.to);
+    });
+
+    // Fetch buses from server for selected route
+    function fetchBuses(from, to) {
+      const busListDiv = document.getElementById('bus-list');
+      busListDiv.innerHTML = 'Loading buses...';
+
+      fetch(`http://localhost:3001/bus/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`)
+        .then(response => response.json())
+        .then(buses => {
+          if (buses.length === 0) {
+            busListDiv.innerHTML = '<p>No buses available for this route.</p>';
+            document.getElementById('proceedToPayment').disabled = true;
+            return;
+          }
+          document.getElementById('proceedToPayment').disabled = false;
+          busListDiv.innerHTML = '';
+          buses.forEach(bus => {
+            const busDiv = document.createElement('div');
+            busDiv.classList.add('bus-item');
+            busDiv.innerHTML = `
+              <input type="radio" name="selectedBus" value="${bus.id}" required>
+              <h3>Bus Number: ${bus.busNumber}</h3>
+              <p>From: ${bus.startPoint}</p>
+              <p>To: ${bus.endPoint}</p>
+            `;
+            busListDiv.appendChild(busDiv);
+          });
+          // Show message "Bus available in 10 mins" if route matches exactly
+          if (buses.length > 0) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.color = 'green';
+            messageDiv.style.fontWeight = 'bold';
+            messageDiv.textContent = 'Bus available in 10 mins';
+            busListDiv.appendChild(messageDiv);
+          }
+        })
+        .catch(error => {
+          busListDiv.innerHTML = '<p>Error loading buses. Please try again later.</p>';
+          console.error('Error fetching buses:', error);
+        });
+    }
+
+    // Proceed to payment
+    document.getElementById('proceedToPayment').addEventListener('click', function() {
+      const selectedBus = document.querySelector('input[name="selectedBus"]:checked');
+      if (!selectedBus) {
+        alert('Please select a bus.');
+        return;
+      }
+      routeData.busId = selectedBus.value;
+      // Populate payment section
+      document.getElementById('from-route').textContent = routeData.from;
+      document.getElementById('to-route').textContent = routeData.to;
+      document.getElementById('distance').textContent = 'Click to calculate';
+      showSection('payment');
+    });
+
+    // Update to options in route
+    function updateToOptions() {
+      const fromSelect = document.getElementById('from');
+      const toSelect = document.getElementById('to');
+      const selectedFrom = fromSelect.value;
+
+      for (let i = 0; i < toSelect.options.length; i++) {
+        toSelect.options[i].disabled = false;
+      }
+
+      for (let i = 0; i < toSelect.options.length; i++) {
+        if (toSelect.options[i].value === selectedFrom) {
+          toSelect.options[i].disabled = true;
+          if (toSelect.value === selectedFrom) {
+            toSelect.value = '';
+          }
+          break;
+        }
+      }
+    }
+
+    document.getElementById('from').addEventListener('change', updateToOptions);
+
+    // Payment distance calculation
+    const placeCoordinates = {
+      "Raipur": { lat: 21.2514, lon: 81.6296 },
+      "Amity University": { lat: 21.2510, lon: 81.6290 },
+      "Kharora": { lat: 21.2000, lon: 81.6500 },
+      "Bhilai": { lat: 21.2167, lon: 81.4333 },
+      "Bilaspur": { lat: 22.0799, lon: 82.1391 }
+    };
+
+    function calculateDistance(coord1, coord2) {
+      const toRad = angle => angle * Math.PI / 180;
+      const R = 6371;
+      const dLat = toRad(coord2.lat - coord1.lat);
+      const dLon = toRad(coord2.lon - coord1.lon);
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function calculateUserDistance() {
+      const to = routeData.to;
+      if (navigator.geolocation && placeCoordinates[to]) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const userLat = position.coords.latitude;
+          const userLon = position.coords.longitude;
+          const dist = calculateDistance({ lat: userLat, lon: userLon }, placeCoordinates[to]);
+          document.getElementById('distance').textContent = dist.toFixed(2) + ' km';
+        }, error => {
+          console.error('Error getting location:', error);
+          document.getElementById('distance').textContent = 'Location access denied';
+        });
+      } else {
+        document.getElementById('distance').textContent = 'N/A';
+      }
+    }
+
+    document.getElementById('calcDistanceBtn').addEventListener('click', calculateUserDistance);
+
+    // Payment done
+    document.getElementById('paymentDoneBtn').addEventListener('click', function() {
+      paymentData.distance = document.getElementById('distance').textContent;
+      paymentData.time = '13 min';
+      paymentData.payment = '10 Rs';
+      // Populate bill
+      document.getElementById('bill-from').textContent = routeData.from;
+      document.getElementById('bill-to').textContent = routeData.to;
+      document.getElementById('bill-distance').textContent = paymentData.distance;
+      document.getElementById('bill-time').textContent = paymentData.time;
+      document.getElementById('bill-payment').textContent = paymentData.payment;
+      showSection('bill');
+
+      // Store in localStorage
+      const activeCustomer = {
+        name: customerData.name,
+        phone: customerData.phone,
+        dob: customerData.dob,
+        gender: customerData.gender,
+        from: routeData.from,
+        to: routeData.to,
+        busId: routeData.busId,
+        distance: paymentData.distance,
+        time: paymentData.time,
+        payment: paymentData.payment,
+        timestamp: new Date().toISOString()
+      };
+
+      let activeCustomers = JSON.parse(localStorage.getItem('activeCustomers')) || [];
+      activeCustomers.push(activeCustomer);
+      localStorage.setItem('activeCustomers', JSON.stringify(activeCustomers));
+    });
+
+    // Women safety functions
+    function alertDriver() {
+      alert('Emergency Alert Sent to Bus Driver! Help is on the way.');
+      showStatus('Alert sent to Bus Driver. Location shared.');
+      console.log('Alert sent to Bus Driver at ' + new Date().toLocaleTimeString());
+    }
+
+    function alertConductor() {
+      alert('Emergency Alert Sent to Conductor! Help is on the way.');
+      showStatus('Alert sent to Conductor. Location shared.');
+      console.log('Alert sent to Conductor at ' + new Date().toLocaleTimeString());
+    }
+
+    function callPolice() {
+      alert('Calling Police Emergency Services...');
+      showStatus('Connecting to Police...');
+      window.location.href = 'tel:100';
+      console.log('Emergency call initiated at ' + new Date().toLocaleTimeString());
+    }
+
+    function showStatus(message) {
+      const statusDiv = document.getElementById('statusMessage');
+      statusDiv.textContent = message;
+      statusDiv.style.display = 'block';
+      setTimeout(() => {
+        statusDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    // Login form
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      if (username === 'driver' && password === 'password') {
+        showSection('driver-dashboard');
+      } else {
+        alert('Invalid username or password');
+      }
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', function() {
+      document.getElementById('loginForm').reset();
+    });
+
+    // Load active customers
+    function loadActiveCustomers() {
+      const activeCustomers = JSON.parse(localStorage.getItem('activeCustomers')) || [];
+      const tbody = document.querySelector('#customersTable tbody');
+      const noDataMessage = document.getElementById('noDataMessage');
+      tbody.innerHTML = '';
+
+      if (activeCustomers.length === 0) {
+        noDataMessage.style.display = 'block';
+        return;
+      } else {
+        noDataMessage.style.display = 'none';
+      }
+
+      activeCustomers.forEach(customer => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${customer.name}</td>
+          <td>${customer.phone}</td>
+          <td>${customer.dob}</td>
+          <td>${customer.gender}</td>
+          <td>${customer.from}</td>
+          <td>${customer.to}</td>
+          <td>${customer.distance}</td>
+          <td>${customer.time}</td>
+          <td>${customer.payment}</td>
+          <td>${new Date(customer.timestamp).toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Download PDF
+    document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const billContent = document.getElementById('billContent').innerText;
+      doc.text(billContent, 10, 10);
+      doc.save('ticket-bill.pdf');
+    });
+
+    // Initial load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadActiveCustomers();
+      setInterval(loadActiveCustomers, 10000);
+    });
+  </script>
+</body>
+</html>
+</result>
+</attempt_completion>

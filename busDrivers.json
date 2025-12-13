@@ -1,0 +1,182 @@
+[
+  {
+    "id": "sample-id",
+    "name": "Sample Driver",
+    "email": "sample@example.com",
+    "phone": "+1234567890",
+    "photo": "path/to/photo.jpg",
+    "license": "path/to/license.jpg",
+    "status": "approved",
+    "submittedAt": "2023-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1757957919854",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\93567fabd443acbffba6aa718dc75226",
+    "license": "uploads\\2d9626fc605f174110326bba92932a86",
+    "status": "approved",
+    "submittedAt": "2025-09-15T17:38:39.854Z"
+  },
+  {
+    "id": "1757958199496",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\5328a30d47a35404ab9f2c054aa0cde2",
+    "license": "uploads\\337184e621e3f1db77826d137168544a",
+    "status": "approved",
+    "submittedAt": "2025-09-15T17:43:19.496Z"
+  },
+  {
+    "id": "1757959005849",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\46bf2fb0475dafdf21e00000cacf47c7",
+    "license": "uploads\\60546db6294cdec48ef6ae96de2d171c",
+    "status": "approved",
+    "submittedAt": "2025-09-15T17:56:45.849Z"
+  },
+  {
+    "id": "1757959351337",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\adf3e7f941dbc5d79643ec983915d3a2",
+    "license": "uploads\\cfbc8c940e175ab332abad0a75bb5974",
+    "status": "approved",
+    "submittedAt": "2025-09-15T18:02:31.337Z"
+  },
+  {
+    "id": "1757959391808",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\696384224f1b9105e885d7020d711ad2",
+    "license": "uploads\\0b642eb284dd65d055a3c0e579eae1a2",
+    "status": "approved",
+    "submittedAt": "2025-09-15T18:03:11.808Z"
+  },
+  {
+    "id": "1757961060529",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\4f6ccf16327d78924722be4efdfb1eaa",
+    "license": "uploads\\4509bf275e8d67f6262ad0f46a32200f",
+    "status": "approved",
+    "submittedAt": "2025-09-15T18:31:00.529Z"
+  },
+  {
+    "id": "1757963630199",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\37a501d22aa63c045d9f9bc38b5f7938",
+    "license": "uploads\\3c2ecd97bc508f185d9808a383c4ac9f",
+    "status": "approved",
+    "submittedAt": "2025-09-15T19:13:50.199Z"
+  },
+  {
+    "id": "1757967552942",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\ca2076c0b5487f4df308811a7ca20136",
+    "license": "uploads\\fe3a8d3d004162d329d7250c89894754",
+    "status": "approved",
+    "submittedAt": "2025-09-15T20:19:12.942Z"
+  },
+  {
+    "id": "1758014680063",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\8c843377bb386504dc7afeb4987ef3fe",
+    "license": "uploads\\6c398bc219c1469aef9e281e42a62b74",
+    "status": "approved",
+    "submittedAt": "2025-09-16T09:24:40.063Z"
+  },
+  {
+    "id": "1758014824292",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\1afbb05e4fdd5be7d0df07a06542097f",
+    "license": "uploads\\3ffe9f48a594c056dcfd1f06193d8b5b",
+    "status": "approved",
+    "submittedAt": "2025-09-16T09:27:04.292Z"
+  },
+  {
+    "id": "1758041347370",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\a32b438ecb0a4481f89a5cb72e2e5440",
+    "license": "uploads\\d63b04eecf1e382ebbfb80ab5f83ad0c",
+    "status": "approved",
+    "submittedAt": "2025-09-16T16:49:07.370Z"
+  },
+  {
+    "id": "1758045351046",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "6261574752",
+    "photo": "uploads\\39d2b975b40a5ef9c9a0a7650c915d05",
+    "license": "uploads\\373bc57d9c87672805e4234cbc24f62d",
+    "status": "approved",
+    "submittedAt": "2025-09-16T17:55:51.046Z"
+  },
+  {
+    "id": "1758046974280",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\4f444d0d62dcd90d5947895708956aa5",
+    "license": "uploads\\51424a1f58ba1838e07c1413960902c1",
+    "status": "approved",
+    "submittedAt": "2025-09-16T18:22:54.280Z"
+  },
+  {
+    "id": "1758047144844",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\d7d428840fdb5f0388823f9b40a459b4",
+    "license": "uploads\\118e032dd17d4428b6d2539a02b73ae2",
+    "status": "rejected",
+    "submittedAt": "2025-09-16T18:25:44.844Z"
+  },
+  {
+    "id": "1758048485030",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\5e3e487ea399b29d6fdfcbc22ad7b61d",
+    "license": "uploads\\14ed51f9e66d9ce19dbd78f2246b0933",
+    "status": "approved",
+    "submittedAt": "2025-09-16T18:48:05.030Z"
+  },
+  {
+    "id": "1758048718718",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\06da304cadf995914c08ec181a929583",
+    "license": "uploads\\6f233f13a6341431cfefb900ddbb8e59",
+    "status": "approved",
+    "submittedAt": "2025-09-16T18:51:58.718Z"
+  },
+  {
+    "id": "1758053071989",
+    "name": "Paritosh Sen",
+    "email": "paritoshsen2006@gmail.com",
+    "phone": "06261574752",
+    "photo": "uploads\\e2a45899285ccb0a3afe5c8ff217f541",
+    "license": "uploads\\88197b5c2a5953a27aea9680cf8cfd88",
+    "status": "pending",
+    "submittedAt": "2025-09-16T20:04:31.992Z"
+  }
+]

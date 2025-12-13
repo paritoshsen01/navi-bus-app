@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bus Driver Registration</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">Navi Bus</a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact Us</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="moving-overlay"></div>
+  <div class="content" style="background-image: url('Homepage.png'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh;">
+    <h1>Bus Driver Registration</h1>
+    <div class="bus-login-container">
+      <form id="bus-registration-form" enctype="multipart/form-data">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required />
+
+        <label for="photo">Upload Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*" required />
+
+        <label for="license">Upload License:</label>
+        <input type="file" id="license" name="license" accept="image/*" required />
+
+        <button type="submit">Submit Registration</button>
+      </form>
+
+      <div id="message"></div>
+    </div>
+  </div>
+  <footer class="footer">
+    <p>© 2024 Explore The Local. All rights reserved.</p>
+    <p>Contact us: info@explorethelocal.com</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('bus-registration-form');
+    const messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      messageDiv.textContent = '';
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('http://localhost:3001/bus-register', {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+        if (response.ok) {
+          messageDiv.style.color = 'green';
+          messageDiv.textContent = 'Registration submitted successfully. Please wait for admin approval.';
+          form.reset();
+          // Redirect to dashboard with id
+          window.location.href = 'bus-dashboard.html?id=' + result.id;
+        } else {
+          messageDiv.style.color = 'red';
+          messageDiv.textContent = result.error || 'Failed to submit registration.';
+        }
+      } catch (error) {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = 'Error submitting registration.';
+      }
+    });
+  </script>
+</body>
+</html>

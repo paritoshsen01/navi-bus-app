@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Bus Driver Verification</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">Navi Bus</a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact Us</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="moving-overlay"></div>
+    <div class="content" style="padding-bottom: 60px;">
+    <h1>Admin Panel</h1>
+    <h2>Bus Driver Verification</h2>
+
+    <div id="login-section" class="admin-container">
+      <h2>Admin Login</h2>
+      <input type="password" id="admin-password" placeholder="Enter admin password" />
+      <button id="login-btn">Login</button>
+      <p id="login-message"></p>
+    </div>
+
+    <div id="admin-section" style="display:none;">
+      <button id="logout-btn" style="float: right; margin: 10px;">Logout</button>
+      <div class="admin-container">
+        <h2>Pending Verifications</h2>
+        <div id="pending-list"></div>
+      </div>
+
+      <div class="admin-container">
+        <h2>Rejected Verifications</h2>
+        <div id="rejected-list"></div>
+      </div>
+  </div>
+  </div>
+  <footer class="footer" style="position: fixed; bottom: 0; width: 100%; background-color: rgba(0,0,0,0.7); color: white; text-align: center; padding: 10px 0;">
+    <p>© 2024 Explore The Local. All rights reserved.</p>
+    <p>Contact us: info@explorethelocal.com</p>
+  </footer>
+
+  <script>
+    let token = null;
+
+    const loginSection = document.getElementById('login-section');
+    const adminSection = document.getElementById('admin-section');
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const loginMessage = document.getElementById('login-message');
+    const pendingList = document.getElementById('pending-list');
+    const rejectedList = document.getElementById('rejected-list');
+
+    loginBtn.addEventListener('click', () => {
+      const password = document.getElementById('admin-password').value;
+      if (!password) {
+        loginMessage.textContent = 'Please enter password';
+        return;
+      }
+      // Check if password matches ADMIN_PASSWORD
+      if (password !== 'admin123') {
+        loginMessage.textContent = 'Incorrect password';
+        return;
+      }
+      // For simplicity, store token as password
+      token = password;
+      loginMessage.textContent = '';
+      loginSection.style.display = 'none';
+      adminSection.style.display = 'block';
+      loadPending();
+      loadRejected();
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      token = null;
+      loginSection.style.display = 'block';
+      adminSection.style.display = 'none';
+      document.getElementById('admin-password').value = '';
+    });
+
+    async function loadPending() {
+      try {
+        const res = await fetch('http://localhost:3001/admin/pending-verifications', {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (res.status === 401) {
+          alert('Unauthorized. Please login again.');
+          // Do not logout automatically, just show login section
+          token = null;
+          loginSection.style.display = 'block';
+          adminSection.style.display = 'none';
+          // Keep the password field as is
+          return;
+        }
+        const data = await res.json();
+        pendingList.innerHTML = '';
+        if (data.length === 0) {
+          pendingList.textContent = 'No pending verifications.';
+          return;
+        }
+        data.forEach(driver => {
+          const div = document.createElement('div');
+          div.style.border = '1px solid #ccc';
+          div.style.margin = '10px';
+          div.style.padding = '10px';
+
+          div.innerHTML = `
+            <p><strong>Name:</strong> ${driver.name}</p>
+            <p><strong>Email:</strong> ${driver.email}</p>
+            <p><strong>Phone:</strong> ${driver.phone}</p>
+            <p><strong>Submitted At:</strong> ${new Date(driver.submittedAt).toLocaleString()}</p>
+            <p><strong>Photo:</strong> <a href="http://localhost:3001/${driver.photo}" target="_blank">View</a></p>
+            <p><strong>License:</strong> <a href="http://localhost:3001/${driver.license}" target="_blank">View</a></p>
+            <button onclick="approve('${driver.id}')">Approve</button>
+            <button onclick="reject('${driver.id}')">Reject</button>
+          `;
+          pendingList.appendChild(div);
+        });
+      } catch (error) {
+        console.error(error);
+        pendingList.textContent = 'Failed to load pending verifications.';
+      }
+    }
+
+    async function loadRejected() {
+      try {
+        const res = await fetch('http://localhost:3001/admin/verifications', {
+          headers: { Authorization: 'Bearer ' + token }
+        });
+        if (res.status === 401) {
+          alert('Unauthorized. Please login again.');
+          // Do not logout automatically, just show login section
+          token = null;
+          loginSection.style.display = 'block';
+          adminSection.style.display = 'none';
+          // Keep the password field as is
+          return;
+        }
+        const data = await res.json();
+        const rejected = data.filter(d => d.status === 'rejected');
+        rejectedList.innerHTML = '';
+        if (rejected.length === 0) {
+          rejectedList.textContent = 'No rejected verifications.';
+          return;
+        }
+        rejected.forEach(driver => {
+          const div = document.createElement('div');
+          div.style.border = '1px solid #ccc';
+          div.style.margin = '10px';
+          div.style.padding = '10px';
+
+          div.innerHTML = `
+            <p><strong>Name:</strong> ${driver.name}</p>
+            <p><strong>Email:</strong> ${driver.email}</p>
+            <p><strong>Phone:</strong> ${driver.phone}</p>
+            <p><strong>Submitted At:</strong> ${new Date(driver.submittedAt).toLocaleString()}</p>
+            <p><strong>Photo:</strong> <a href="http://localhost:3001/${driver.photo}" target="_blank">View</a></p>
+            <p><strong>License:</strong> <a href="http://localhost:3001/${driver.license}" target="_blank">View</a></p>
+          `;
+          rejectedList.appendChild(div);
+        });
+      } catch (error) {
+        console.error(error);
+        rejectedList.textContent = 'Failed to load rejected verifications.';
+      }
+    }
+
+    async function approve(id) {
+      try {
+        const res = await fetch('http://localhost:3001/admin/approve-verification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          },
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert('Driver approved');
+          // Do not logout automatically after approve
+          loadPending();
+          loadRejected();
+        } else {
+          alert(data.error || 'Failed to approve');
+        }
+      } catch (error) {
+        alert('Error approving driver');
+      }
+    }
+
+    async function reject(id) {
+      try {
+        const res = await fetch('http://localhost:3001/admin/reject-verification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          },
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          alert('Driver rejected');
+          loadPending();
+          loadRejected();
+        } else {
+          alert(data.error || 'Failed to reject');
+        }
+      } catch (error) {
+        alert('Error rejecting driver');
+      }
+    }
+  </script>
+</body>
+</html>

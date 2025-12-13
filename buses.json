@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1757960972762",
+    "driverId": "1757959391808",
+    "busNumber": "23424",
+    "startPoint": "katrpola",
+    "endPoint": "sdfsdfs",
+    "stops": [
+      "yugfty",
+      "vjbh",
+      "bhbhj",
+      "bnmj"
+    ],
+    "times": [
+      "2.121212121",
+      "21212121",
+      "212121",
+      "212121"
+    ],
+    "photo": "uploads\\b00c4ba46a4572559e218c646d2f47f5",
+    "createdAt": "2025-09-15T18:29:32.762Z"
+  },
+  {
+    "id": "1757967202691",
+    "driverId": "1757963630199",
+    "busNumber": "23424",
+    "startPoint": "Amity University",
+    "endPoint": "Raipur",
+    "stops": [],
+    "times": [],
+    "photo": "uploads\\1fcbb47bf5386dd2f37bd088f1d7c4f2",
+    "createdAt": "2025-09-15T20:13:22.691Z"
+  }
+]
