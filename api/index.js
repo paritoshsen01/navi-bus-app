@@ -3,7 +3,7 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const { db, bucket } = require('./firebase-config');
+const { db, bucket } = require('../firebase-config');
 
 const app = express();
 
@@ -259,10 +259,6 @@ app.get('/bus/search', async (req, res) => {
     console.error('Error searching buses:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
 });
 
 module.exports = app;
