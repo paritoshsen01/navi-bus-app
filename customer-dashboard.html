@@ -337,7 +337,7 @@
       const busListDiv = document.getElementById('bus-list');
       busListDiv.innerHTML = 'Loading buses...';
 
-      fetch(`https://your-vercel-app.vercel.app/bus/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`)
+      fetch(`https://navi-bus-app.vercel.app/bus/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`)
         .then(response => response.json())
         .then(buses => {
           if (buses.length === 0) {

@@ -86,7 +86,7 @@
 
     async function loadPending() {
       try {
-        const res = await fetch('https://your-vercel-app.vercel.app/admin/pending-verifications', {
+        const res = await fetch('https://navi-bus-app.vercel.app/admin/pending-verifications', {
           headers: { Authorization: 'Bearer ' + token }
         });
         if (res.status === 401) {
@@ -115,8 +115,8 @@
             <p><strong>Email:</strong> ${driver.email}</p>
             <p><strong>Phone:</strong> ${driver.phone}</p>
             <p><strong>Submitted At:</strong> ${new Date(driver.submittedAt).toLocaleString()}</p>
-            <p><strong>Photo:</strong> <a href="https://your-vercel-app.vercel.app/${driver.photo}" target="_blank">View</a></p>
-            <p><strong>License:</strong> <a href="https://your-vercel-app.vercel.app/${driver.license}" target="_blank">View</a></p>
+            <p><strong>Photo:</strong> <a href="https://navi-bus-app.vercel.app/${driver.photo}" target="_blank">View</a></p>
+            <p><strong>License:</strong> <a href="https://navi-bus-app.vercel.app/${driver.license}" target="_blank">View</a></p>
             <button onclick="approve('${driver.id}')">Approve</button>
             <button onclick="reject('${driver.id}')">Reject</button>
           `;
@@ -130,7 +130,7 @@
 
     async function loadRejected() {
       try {
-        const res = await fetch('https://your-vercel-app.vercel.app/admin/verifications', {
+        const res = await fetch('https://navi-bus-app.vercel.app/admin/verifications', {
           headers: { Authorization: 'Bearer ' + token }
         });
         if (res.status === 401) {
@@ -173,7 +173,7 @@
 
     async function approve(id) {
       try {
-        const res = await fetch('https://your-vercel-app.vercel.app/admin/approve-verification', {
+        const res = await fetch('https://navi-bus-app.vercel.app/admin/approve-verification', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -197,7 +197,7 @@
 
     async function reject(id) {
       try {
-        const res = await fetch('https://your-vercel-app.vercel.app/admin/reject-verification', {
+        const res = await fetch('https://navi-bus-app.vercel.app/admin/reject-verification', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

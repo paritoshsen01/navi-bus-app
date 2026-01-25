@@ -6,15 +6,12 @@ const path = require('path');
 const { db, bucket } = require('./firebase-config');
 
 const app = express();
-const port = 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
-app.use(express.static(__dirname));
 
-// Multer setup for file uploads
-const upload = multer({ dest: 'uploads/' });
+// Multer setup for file uploads - use /tmp for Vercel serverless
+const upload = multer({ dest: '/tmp/' });
 
 // Firebase collection references
 const busDriversCollection = db.collection('busDrivers');
@@ -167,19 +164,8 @@ app.get('/bus-driver-status', async (req, res) => {
   }
 });
 
-const busesFile = path.join(__dirname, 'buses.json');
-
-function loadBuses() {
-  if (!fs.existsSync(busesFile)) {
-    fs.writeFileSync(busesFile, '[]');
-  }
-  const data = fs.readFileSync(busesFile);
-  return JSON.parse(data);
-}
-
-function saveBuses(data) {
-  fs.writeFileSync(busesFile, JSON.stringify(data, null, 2));
-}
+// Note: File system operations are not needed in serverless environment
+// All data is stored in Firebase Firestore
 
 // Add a new bus for a driver
 app.post('/bus/add', upload.single('photo'), async (req, res) => {
