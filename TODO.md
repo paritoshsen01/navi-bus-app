@@ -1,52 +1,29 @@
-# Bus Login and Verification System Implementation
+# Firebase Migration Plan
 
-## Overview
-Implement a bus driver login system with verification process, admin approval/rejection, and bus driver dashboard.
+## Manual Steps (User Needs to Do):
+1. Firebase Project Setup:
+   - Go to https://console.firebase.google.com/
+   - Create a new project or use existing one
+   - Enable Firestore Database
+   - Enable Firebase Storage
+   - Get Firebase config (API key, project ID, etc.)
 
-## Steps
+2. Firebase Config:
+   - Copy the Firebase config from Firebase Console
+   - Share it with me for code integration
 
-### 1. Set up data storage
-- Create a JSON file (busDrivers.json) to store bus driver information and verification status.
+## Code Changes (Completed):
+- [x] Install Firebase SDK
+- [x] Create Firebase config file (firebase-config.js)
+- [x] Update server.js to use Firestore instead of JSON files
+- [x] Update file upload logic to use Firebase Storage
+- [x] Create migration script (migrate-data.js)
+- [x] Update package.json with new dependencies
 
-### 2. Create bus driver registration page
-- Create bus-login.html with form fields: name, email, phone, photo upload, license upload, and other relevant details.
-- Add form validation and submission to backend API.
+## Migration:
+- [x] Run migration script to move existing data to Firebase
 
-### 3. Add backend API endpoints
-- POST /bus-register: Handle bus driver registration submission, save to JSON file with status 'pending'.
-- GET /admin/pending-verifications: Return list of pending bus driver verifications.
-- POST /admin/approve-verification: Update bus driver status to 'approved'.
-- POST /admin/reject-verification: Update bus driver status to 'rejected'.
-- Add simple authentication for admin endpoints (e.g., basic password check).
-
-### 4. Create admin page
-- Create admin.html with login form for admin access.
-- Display two sections: pending approvals and rejected verifications.
-- Add buttons to approve or reject each bus driver.
-- Use JavaScript to fetch data from API and update UI.
-
-### 5. Create bus driver dashboard
-- Create bus-dashboard.html accessible only after admin approval.
-- Check verification status before allowing access.
-- Display bus driver information and relevant dashboard content.
-
-### 6. Update routing and navigation
-- Add links to bus-login.html from main page.
-- Add link to admin.html (with authentication).
-- Update server.js to serve new HTML files if needed.
-- Ensure proper navigation flow between pages.
-
-### 7. Add frontend JavaScript
-- Create bus-login.js for registration form handling.
-- Create admin.js for admin page functionality.
-- Create bus-dashboard.js for dashboard logic.
-- Integrate with existing script.js if needed.
-
-### 8. Test the system
-- Test bus driver registration.
-- Test admin approval/rejection.
-- Test bus driver dashboard access.
-- Ensure proper error handling and user feedback.
-
-### 9. Add CSS styling
-- Add styles for bus-login.html, admin.html, bus-dashboard.html.
+## Testing:
+1. Test all endpoints work with Firebase
+2. Verify file uploads work with Firebase Storage
+3. Test data migration
