@@ -1,18 +1,15 @@
-// Firebase Admin SDK configuration
-// Replace this with your actual Firebase config from Firebase Console
+const admin = require("firebase-admin");
 
-const admin = require('firebase-admin');
-
-// Initialize Firebase Admin SDK
-// You need to download the service account key from Firebase Console
-// and place it in the project root as 'serviceAccountKey.json'
-
-const serviceAccount = require('./serviceAccountKey.json'); // You'll need to add this file
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'navi-bus-48b81.firebasestorage.app' // Updated with your storage bucket
-});
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+    }),
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  });
+}
 
 const db = admin.firestore();
 const bucket = admin.storage().bucket();
