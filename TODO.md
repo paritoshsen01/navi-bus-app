@@ -1,29 +1,30 @@
-# Firebase Migration Plan
+# Online Deployment Plan
 
-## Manual Steps (User Needs to Do):
-1. Firebase Project Setup:
-   - Go to https://console.firebase.google.com/
-   - Create a new project or use existing one
-   - Enable Firestore Database
-   - Enable Firebase Storage
-   - Get Firebase config (API key, project ID, etc.)
+## User ke Kaam (Manual Steps):
+1. **Vercel Account Setup:**
+   - Go to https://vercel.com/
+   - Sign up/login with GitHub
+   - Connect your GitHub repo: https://github.com/paritoshsen01/Transport
 
-2. Firebase Config:
-   - Copy the Firebase config from Firebase Console
-   - Share it with me for code integration
+2. **Deploy on Vercel:**
+   - Import the GitHub repo
+   - Vercel automatically detect Node.js project
+   - Deploy karo
+   - Deployed URL mil jayega, e.g., https://transport-xyz.vercel.app
 
-## Code Changes (Completed):
-- [x] Install Firebase SDK
-- [x] Create Firebase config file (firebase-config.js)
-- [x] Update server.js to use Firestore instead of JSON files
-- [x] Update file upload logic to use Firebase Storage
-- [x] Create migration script (migrate-data.js)
-- [x] Update package.json with new dependencies
+3. **Firebase Ensure Karo:**
+   - serviceAccountKey.json file Vercel pe upload karo (Environment Variables me)
+   - Firebase project ready hai
 
-## Migration:
-- [x] Run migration script to move existing data to Firebase
+4. **URLs Update Karo:**
+   - Saare files me 'https://your-vercel-app.vercel.app' ko actual deployed URL se replace karo
+
+## Code Changes (Main ne kiye):
+- [x] vercel.json ready hai
+- [x] server.js Firebase use kar raha hai
+- [x] Frontend URLs ko placeholder se update kiya
 
 ## Testing:
-1. Test all endpoints work with Firebase
-2. Verify file uploads work with Firebase Storage
-3. Test data migration
+1. Deploy ke baad test karo sab features
+2. Bus registration, login, admin panel check karo
+3. File uploads Firebase pe ho rahe hain ya nahi

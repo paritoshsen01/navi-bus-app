@@ -37,7 +37,7 @@
       }
 
       try {
-        const res = await fetch('http://localhost:3001/bus-driver-status?id=' + encodeURIComponent(id));
+        const res = await fetch('https://your-vercel-app.vercel.app/bus-driver-status?id=' + encodeURIComponent(id));
         if (!res.ok) {
           document.getElementById('dashboard-content').textContent = 'Failed to load dashboard.';
           return;
@@ -158,7 +158,7 @@
           formData.set('times', JSON.stringify(times));
           formData.set('photo', photo);
           try {
-            const res = await fetch('http://localhost:3001/bus/add', {
+            const res = await fetch('https://your-vercel-app.vercel.app/bus/add', {
               method: 'POST',
               body: formData
             });
@@ -215,7 +215,7 @@
 
       async function loadBuses(driverId) {
         try {
-          const res = await fetch(`http://localhost:3001/bus/list?driverId=${encodeURIComponent(driverId)}`);
+          const res = await fetch(`https://your-vercel-app.vercel.app/bus/list?driverId=${encodeURIComponent(driverId)}`);
           if (!res.ok) {
             busListDiv.textContent = 'Failed to load buses.';
             return;
@@ -235,7 +235,7 @@
               <p><strong>Bus Name:</strong> ${bus.busNumber}</p>
               <p><strong>Phone:</strong> ${bus.phone}</p>
               <p><strong>Route:</strong> ${bus.startPoint} to ${bus.endPoint}</p>
-              <p><strong>Photo:</strong> <a href="http://localhost:3001/${bus.photo}" target="_blank">View</a></p>
+              <p><strong>Photo:</strong> <a href="https://your-vercel-app.vercel.app/${bus.photo}" target="_blank">View</a></p>
               <button onclick="deleteBus('${bus.id}')">Delete Bus</button>
             `;
             busListDiv.appendChild(div);
@@ -248,7 +248,7 @@
       window.deleteBus = async function(busId) {
         if (!confirm('Are you sure you want to delete this bus?')) return;
         try {
-          const res = await fetch('http://localhost:3001/bus/delete', {
+          const res = await fetch('https://your-vercel-app.vercel.app/bus/delete', {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'

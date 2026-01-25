@@ -73,7 +73,7 @@ function handleCredentialResponse(response) {
   const user = JSON.parse(jsonPayload);
 
   // Send login notification to backend
-  fetch('http://localhost:3001/notify-login', {
+  fetch('https://your-vercel-app.vercel.app/notify-login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
