@@ -3,7 +3,7 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
-const { db, bucket } = require('../firebase-config');
+const { db } = require('../firebase-config');
 
 const app = express();
 
@@ -20,27 +20,13 @@ const busesCollection = db.collection('buses');
 // Admin password for simple authentication
 const ADMIN_PASSWORD = 'admin123'; // Change this to a secure password
 
-// Endpoint to register bus driver with file uploads
-app.post('/bus-register', upload.fields([{ name: 'photo' }, { name: 'license' }]), async (req, res) => {
+// Endpoint to register bus driver (no file uploads)
+app.post('/bus-register', async (req, res) => {
   try {
     const { name, email, phone } = req.body;
-    if (!name || !email || !phone || !req.files || !req.files.photo || !req.files.license) {
-      return res.status(400).json({ error: 'All fields and files are required' });
+    if (!name || !email || !phone) {
+      return res.status(400).json({ error: 'Name, email, and phone are required' });
     }
-
-    // Upload files to Firebase Storage
-    const photoFile = req.files.photo[0];
-    const licenseFile = req.files.license[0];
-
-    const photoUpload = await bucket.upload(photoFile.path, {
-      destination: `drivers/${Date.now()}_photo_${photoFile.originalname}`,
-      metadata: { contentType: photoFile.mimetype }
-    });
-
-    const licenseUpload = await bucket.upload(licenseFile.path, {
-      destination: `drivers/${Date.now()}_license_${licenseFile.originalname}`,
-      metadata: { contentType: licenseFile.mimetype }
-    });
 
     // Create new bus driver entry
     const newDriver = {
@@ -48,18 +34,12 @@ app.post('/bus-register', upload.fields([{ name: 'photo' }, { name: 'license' }]
       name,
       email,
       phone,
-      photo: photoUpload[0].metadata.mediaLink,
-      license: licenseUpload[0].metadata.mediaLink,
       status: 'pending',
       submittedAt: new Date().toISOString()
     };
 
     // Save to Firestore
     await busDriversCollection.doc(newDriver.id).set(newDriver);
-
-    // Clean up local files
-    fs.unlinkSync(photoFile.path);
-    fs.unlinkSync(licenseFile.path);
 
     res.json({ success: true, message: 'Registration submitted successfully', id: newDriver.id });
   } catch (error) {
@@ -167,20 +147,13 @@ app.get('/bus-driver-status', async (req, res) => {
 // Note: File system operations are not needed in serverless environment
 // All data is stored in Firebase Firestore
 
-// Add a new bus for a driver
-app.post('/bus/add', upload.single('photo'), async (req, res) => {
+// Add a new bus for a driver (no photo required)
+app.post('/bus/add', async (req, res) => {
   try {
     const { driverId, busNumber, startPoint, endPoint, stops, times } = req.body;
-    if (!driverId || !busNumber || !startPoint || !endPoint || !req.file) {
-      return res.status(400).json({ error: 'All fields and photo are required' });
+    if (!driverId || !busNumber || !startPoint || !endPoint) {
+      return res.status(400).json({ error: 'Driver ID, bus number, start point, and end point are required' });
     }
-
-    // Upload photo to Firebase Storage
-    const photoFile = req.file;
-    const photoUpload = await bucket.upload(photoFile.path, {
-      destination: `buses/${Date.now()}_bus_${photoFile.originalname}`,
-      metadata: { contentType: photoFile.mimetype }
-    });
 
     const newBus = {
       id: Date.now().toString(),
@@ -190,15 +163,11 @@ app.post('/bus/add', upload.single('photo'), async (req, res) => {
       endPoint,
       stops: stops ? JSON.parse(stops) : [], // optional array
       times: times ? JSON.parse(times) : [], // optional array
-      photo: photoUpload[0].metadata.mediaLink,
       createdAt: new Date().toISOString()
     };
 
     // Save to Firestore
     await busesCollection.doc(newBus.id).set(newBus);
-
-    // Clean up local file
-    fs.unlinkSync(photoFile.path);
 
     res.json({ success: true, message: 'Bus added successfully', busId: newBus.id });
   } catch (error) {
