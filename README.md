@@ -120,17 +120,3 @@ The system is designed using modern technologies like **Flutter, Firebase, and G
 
 Navi Bus aims to transform traditional public transport into a **smart, efficient, and user-friendly system** using modern mobile and cloud technologies.
 
----
-
-## 👨‍💻 Author
-
-**Paritosh Sen**  
-📍 Balaghat, Madhya Pradesh  
-📧 paritoshsen2006@gmail.com  
-🔗 GitHub: https://github.com/paritoshsen01  
-
----
-
-## 📜 License
-
-This project is for educational and research purposes.
