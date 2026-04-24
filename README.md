@@ -1,7 +1,7 @@
 # 🚍 Navi Bus Smart Transport System
 
 A smart public transport application designed to provide real-time bus tracking, route management, and digital ticketing for students and daily commuters.
-
+ 
 ---
 
 ## 📌 Overview
